@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    margin: 0;
+    background-color: #f4f4f4;
+    padding: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 150%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+body::-webkit-scrollbar {
+    width: 0;
+}
+
+.sw-container {
+    background-color: white;
+    padding: 48px 98px 98px 98px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sw-logo {
+    display: flex;
+    margin-bottom: 32px;
+    justify-content: center;
+}
+
+.sw-modal{
+    display: inline-block;
+    max-width: 700px;
+    width: 100%;
+}
+
+.sw-box {
+    max-width: 500px;
+    width: 100%;
+    height: 68px;
+    border-radius: 8px;
+    border: 1px solid #E8E8E8;
+    background-color: white;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.sw-box .sw-merchant {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sw-box .sw-total {
+    position: absolute;
+    bottom: 8px;
+    left: 15px;
+    font-size: 16px;
+}
+
+.sw-box .sw-price {
+    position: absolute;
+    bottom: 8px;
+    right: 15px;
+    font-size: 16px;
+}
+
+.sw-categories {
+    max-width: 500px;
+    width: 100%;
+}
+
+.sw-category-title {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 8px;
+    color: #1C1C1C;
+}
+
+.sw-category-description {
+    color: #606060;
+    margin-bottom: 16px;
+}
+
+.sw-category {
+    margin-bottom: 40px;
+}
+
+.sw-payment-method-list {
+    border-radius: 8px;
+    border: 1px solid #E8E8E8;
+}
+
+.sw-payment-method-list :last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.sw-payment-method-list label:last-of-type {
+    border-bottom: none;
+}
+
+.sw-payment-method-list > div:last-child {
+    border-top: 1px solid #E8E8E8;
+}
+
+.sw-payment-method {
+    cursor: pointer;
+    display: flex;
+    padding: 15px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #E8E8E8;
+}
+
+.sw-category input[type="radio"] {
+    display: none;
+}
+
+.sw-radio-button {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border: 2px solid #e8e8e8;
+    border-radius: 50%;
+    margin-right: 13px;
+}
+
+.sw-category input[type="radio"]:checked + .sw-payment-method .sw-radio-button {
+    border-color: #00c2a3;
+    width: 6px;
+    height: 6px;
+    border-width: 5px;
+}
+
+.sw-category input[type="radio"]:checked ~ .sw-payment-method-description {
+    display: block;
+
+    opacity: 1;
+    transform: translateY(0);
+    animation: slideIn 0.2s forwards;
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-10%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sw-payment-method-title {
+    font-weight: bold;
+}
+
+.sw-button-and-title {
+    display: flex;
+}
+
+.sw-payment-method-description {
+    padding: 20px 20px 20px 48px;
+    display: none;
+    background-color: #f2fcfa;
+    line-height: 2;
+    border-bottom: 1px solid #E8E8E8;
+
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateY(-100%);
+}
+
+.sw-payment-method-cost {
+    font-weight: bolder;
+    text-align: right;
+    color: #009079;
+    margin-left: 32px;
+}
+
+.sw-controls {
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.sw-cancel {
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+}
+
+.sw-cancel label {
+    margin-left: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.sw-continue {
+    cursor: pointer;
+    background-color: #1c1c1c;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 18px 24px;
+    margin: 20px 0 20px 20px;
+}
+
+.sw-methods-unavailable {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 57px;
+    margin-bottom: 129px;
+}
+
+@media (max-width: 750px) {
+    body {
+        padding: 0;
+        background-color: white;
+    }
+
+    .sw-container {
+        box-shadow: none;
+        padding: 40px;
+    }
+
+    .sw-modal, .sw-box, .sw-categories {
+        max-width: 750px;
+    }
+
+    .sw-payment-method {
+        max-width: 720px;
+    }
+}
