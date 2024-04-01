@@ -8,6 +8,7 @@ use App\Models\PaymentMethodInfo;
 use App\Models\PaymentResponse;
 use App\Models\RedirectRequest;
 use App\Services\BusinessLogic\OrderTransformerService;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -75,30 +76,36 @@ class Controller extends BaseController
         $paymentResponse->nsu = '123';
         $paymentResponse->acquirer = null;
 
-        /** @var HttpClient $httpClient */
-        $httpClient = ServiceRegister::getService(HttpClient::CLASS_NAME);
+        $callbackUrl = $redirectRequest->callbackUrl;
+        $ch = curl_init($callbackUrl);
+        $jsonData = json_encode([
+            'paymentId' => $redirectRequest->paymentId,
+            'status' => 'approved',
+            'authorizationId' => '456',
+            'nsu' => '123',
+            'tid' => $createdOrder->getReference(),
+            'acquirer' => null,
+        ]);
+        $headers = [
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'X-VTEX-API-Is-TestSuite: true',
+            'X-VTEX-API-AppKey: ' . config('services.vtex.app_key'),
+            'X-VTEX-API-AppToken: ' . config('services.vtex.app_token'),
+        ];
 
-        $httpClient->requestAsync(
-            'POST',
-            $redirectRequest->callbackUrl,
-            [
-                'Content-Type' => 'Content-Type: application/json',
-                'Accept' => 'Accept: application/json',
-                'X-VTEX-API-Is-TestSuite' => true,
-                'X-VTEX-API-AppKey' => $request->header('X-Vtex-Api-Appkey'),
-                'X-VTEX-API-AppToken' => $request->header('X-Vtex-Api-Apptoken'),
-            ],
-            (string)json_encode([
-                'paymentId' => $redirectRequest->paymentId,
-                'status' => 'approved',
-                'authorizationId' => '456',
-                'nsu' => '123',
-                'tid' => $createdOrder->getReference(),
-                'acquirer' => null,
-                'X-VTEX-API-AppKey' => $request->header('X-Vtex-Api-Appkey'),
-                'X-VTEX-API-AppToken' => $request->header('X-Vtex-Api-Apptoken'),
-            ])
-        );
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            throw new Exception(curl_error($ch));
+        }
+
+        curl_close($ch);
 
         return response()->json($paymentResponse->toArray());
     }
