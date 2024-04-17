@@ -40,7 +40,7 @@ class Controller extends BaseController
     {
         $manifest = new Manifest();
         $manifest->paymentMethods = [
-            new PaymentMethodInfo('SeQura')
+            new PaymentMethodInfo('Logeecom Test Payment Method')
         ];
         $manifest->customFields = [
             new CustomField('merchantId', 'text'),
